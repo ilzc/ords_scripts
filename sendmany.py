@@ -5,16 +5,17 @@ import sys
 from datetime import datetime
 
 def main(argv):
-    if len(argv) != 5:
+    if len(argv) != 6:
         print("参数数量错误。")
-        print("使用方法: python sendmany.py <bitcoin_data_dir> <wallet_name> <sats> <count>")
-        print("示例: python sendmany.py e:\\Bitcoin ord 1000 5")
+        print("使用方法: python sendmany.py <bitcoin_data_dir> <wallet_name> <sats> <count> <fee_rate>")
+        print("示例: python sendmany.py e:\\Bitcoin ord 1000 5 2 (此处的 fee_rate 是 2 sat/vB)")
         return
 
     bitcoin_data_dir = argv[1]
     wallet_name = argv[2]
     sats = int(argv[3])
     count = int(argv[4])
+    fee_rate = int(argv[5])
 
     if sats < 546:
         print("错误: sats 值不能小于 546 聪。")
@@ -46,7 +47,7 @@ def main(argv):
             recipients[address] = float(sats) / 1e8  # Convert sats to BTC
 
     recipients_json = json.dumps(recipients)
-    cmd_sendmany = ["bitcoin-cli", f"-datadir={bitcoin_data_dir}", f"-rpcwallet={wallet_name}", "sendmany", "", recipients_json]
+    cmd_sendmany = ["bitcoin-cli", f"-datadir={bitcoin_data_dir}", f"-rpcwallet={wallet_name}", "sendmany", "", recipients_json, "[]", "{}", "UNSET", str(fee_rate)]
     print("执行的命令: ", " ".join(cmd_sendmany))  # 打印命令字符串
     result = subprocess.run(cmd_sendmany, stdout=subprocess.PIPE, text=True)
     print("发送结果: ", result.stdout)
