@@ -11,10 +11,13 @@ A helper script that distribute satoshis to `ord` generated addresses.Making mor
 `count` - total addresses to generate.
 
 usage:
+
 ``` 
 python sendmany.py <bitcoin_data_dir> <wallet_name> <sats> <count>
 ```
+
 sample: 
+
 ```
 python sendmany.py e:\\Bitcoin ord 1000 5
 ```
